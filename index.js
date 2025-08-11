@@ -34,6 +34,21 @@
     }
 
     /* ------------------------------------------------------------------
+     * Back button handler.
+     * On pages where a button with class "btn-back" exists (e.g. the
+     * stars or packages pages), we override its click behavior to
+     * navigate back to the home page.  This avoids hard‑coding
+     * file names in the HTML (like "index (3).html").  If the button is
+     * absent, this code does nothing.
+     */
+    const btnBack = document.querySelector('.btn-back');
+    if (btnBack) {
+      btnBack.addEventListener('click', () => {
+        window.location.href = 'index.html';
+      });
+    }
+
+    /* ------------------------------------------------------------------
      * Mobile navigation toggle (if present).
      * Some pages might include a hamburger icon with id="burger" and a
      * menu container with id="menu".  This code toggles the menu open
@@ -178,11 +193,12 @@
         form.append('username', username);
         form.append('screenshot', fileInput.files[0]);
         try {
-          // Send order data to our API server.  Update the URL below if
-          // your backend runs on a different host or port.  Using an
-          // absolute URL avoids 404 errors when the page is served from a
-          // static file server.
-          const apiEndpoint = '/api/order';
+        // Send order data to our API server.  Use a relative URL so that
+        // the front‑end works correctly when deployed on Render or any
+        // other host.  Render automatically proxies requests to the
+        // correct internal port, so specifying localhost and a port
+        // number would break the connection on production.
+        const apiEndpoint = '/api/order';
           const resp   = await fetch(apiEndpoint, { method: 'POST', body: form });
           let result;
           try { result = await resp.json(); } catch { result = { success: resp.ok }; }
