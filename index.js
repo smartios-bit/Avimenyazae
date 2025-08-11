@@ -182,7 +182,7 @@
           // your backend runs on a different host or port.  Using an
           // absolute URL avoids 404 errors when the page is served from a
           // static file server.
-          const apiEndpoint = 'http://localhost:3000/api/order';
+          const apiEndpoint = '/api/order';
           const resp   = await fetch(apiEndpoint, { method: 'POST', body: form });
           let result;
           try { result = await resp.json(); } catch { result = { success: resp.ok }; }
